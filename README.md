@@ -18,7 +18,7 @@ New-Item -Type file -Path $PROFILE -Force
 Open it to edit:
 
 ```
-notpad $PROFILE
+notepad $PROFILE
 ```
 
 Add the following posh:
@@ -32,3 +32,13 @@ Rerun PowerShell or reload your profile immediately:
 ```
 . $PROFILE
 ```
+
+# Resources
+
+- [git.plugin.zsh](https://github.com/ohmyzsh/ohmyzsh/blob/f0f42828fa6842af631cc3dbf45f5454ea88fa3c/plugins/git/git.plugin.zsh)
+- [$profile Gist](https://gist.github.com/dunckr/8334213)
+- [AlexZeitler/posh-git-alias](https://github.com/AlexZeitler/posh-git-alias)
+
+# LICENSE
+
+MIT @[chengcyber](https://github.com/chengcyber)
