@@ -1,11 +1,12 @@
 # https://github.com/ohmyzsh/ohmyzsh/blob/f0f42828fa6842af631cc3dbf45f5454ea88fa3c/plugins/git/git.plugin.zsh
 
 # Remove Defaults
-Rename-Item alias:\gc gk -Force
-rename-item alias:\gcm gkm -Force
-# rename-item alias:\gcs gks -Force
+Rename-Item alias:\gc ogc -Force -ErrorAction SilentlyContinue
+Rename-Item alias:\gcm ogcm -Force -ErrorAction SilentlyContinue
+Rename-Item alias:\gl ogl -Force -ErrorAction SilentlyContinue
+Rename-Item alias:\gsn ogsn -Force -ErrorAction SilentlyContinue
+Rename-Item alias:\gm ogm -Force -ErrorAction SilentlyContinue
 
-New-Alias grep findstr
 
 function git_current_branch() {
     git rev-parse --git-dir > $null
@@ -215,7 +216,7 @@ function gcm() {
 }
 
 function gcd() {
-    $dev_branch=(git_develop_branch)
+    $dev_branch = (git_develop_branch)
     git checkout $dev_branch $args
 }
 
@@ -296,7 +297,7 @@ function gdw() {
 
 ###
 
-function gd() {
+function gf() {
     git fetch $args
 }
 
@@ -324,24 +325,465 @@ function gga() {
 }
 
 
-# TODO: L196
+function ggpur() {
+    ggu
+}
+
+function ggpull() {
+    git pull origin "$(git_current_branch)"
+}
+
+function ggpush() {
+    git push origin "$(git_current_branch)"
+}
+
+
+function ggsup() {
+    git branch --set-upstream-to=origin/$(git_current_branch) $args
+}
 
 function gpsup() {
-    git push --set-upstream origin (git_current_branch)
-} 
+    git push --set-upstream origin $(git_current_branch) $args
+}
+
+
+function ghh() {
+    git help $args
+}
+
+
+function gignore() {
+    git update-index --assume-unchanged $args
+}
+
+function gignored() {
+    git ls-files -v | findstr /R "^[[:lower:]]"
+}
+
+function git-svn-dcommit-push() {
+    git svn dcommit
+    git push github $(git_main_branch):svntrunk
+}
+
+
+# function gk() {
+#     \gitk --all --branches &!
+# }
+
+# function gke() {
+#     \gitk --all $(git log -g --pretty=%h) &!
+# }
+
+
+function gl() {
+    git pull $args
+}
+
+function glg() {
+    git log --stat $args
+}
+
+function glgp() {
+    git log --stat -p $args
+}
+
+function glgg() {
+    git log --graph $args
+}
+
+function glgga() {
+    git log --graph --decorate --all $args
+}
+
+function glgm() {
+    git log --graph --max-count=10 $args
+}
+
+function glo() {
+    git log --oneline --decorate $args
+}
+
+function glol() {
+    git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' $args
+}
+
+function glols() {
+    git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --stat $args
+}
+
+function glod() {
+    git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' $args
+}
+
+function glods() {
+    git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=short $args
+}
+
+function glola() {
+    git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --all $args
+}
+
+function glog() {
+    git log --oneline --decorate --graph $args
+}
+
+function gloga() {
+    git log --oneline --decorate --graph --all $args
+}
+
+function glp() {
+    if($null -ne $args[0]) {
+        git log --pretty=$args[0]
+    }
+}
+
+function gm() {
+    git merge $args
+}
+
+function gmom() {
+    git merge origin/$(git_main_branch) $args
+}
+
+function gmtl() {
+    git mergetool --no-prompt $args
+}
+
+function gmtlvim() {
+    git mergetool --no-prompt --tool=vimdiff $args
+}
+
+function gmum() {
+    git merge upstream/$(git_main_branch) $args
+}
+
+function gma() {
+    git merge --abort $args
+}
+
+
+function gp() {
+    git push $args
+}
+
+function gpd() {
+    git push --dry-run $args
+}
+
+function gpf() {
+    git push --force-with-lease $args
+}
+
+function gpf!() {
+    git push --force $args
+}
+
+function gpoat() {
+    git push origin --all
+    git push origin --tags
+}
+
+function gpr() {
+    git pull --rebase $args
+}
+
+function gpu() {
+    git push upstream $args
+}
+
+function gpv() {
+    git push -v $args
+}
+
+
+function gr() {
+    git remote $args
+}
+
+function gra() {
+    git remote add $args
+}
+
+function grb() {
+    git rebase $args
+}
+
+function grba() {
+    git rebase --abort $args
+}
+
+function grbc() {
+    git rebase --continue $args
+}
+
+function grbd() {
+    git rebase $(git_develop_branch) $args
+}
+
+function grbi() {
+    git rebase -i $args
+}
+
+function grbm() {
+    git rebase $(git_main_branch) $args
+}
+
+function grbom() {
+    git rebase origin/$(git_main_branch) $args
+}
+
+function grbo() {
+    git rebase --onto $args
+}
+
+function grbs() {
+    git rebase --skip $args
+}
+
+function grev() {
+    git revert $args
+}
+
+function grh() {
+    git reset $args
+}
+
+function grhh() {
+    git reset --hard $args
+}
+
+function groh() {
+    git reset origin/$(git_current_branch) --hard $args
+}
+
+function grm() {
+    git rm $args
+}
+
+function grmc() {
+    git rm --cached $args
+}
+
+function grmv() {
+    git remote rename $args
+}
+
+function grrm() {
+    git remote remove $args
+}
+
+function grs() {
+    git restore $args
+}
+
+function grset() {
+    git remote set-url $args
+}
+
+function grss() {
+    git restore --source $args
+}
+
+function grst() {
+    git restore --staged $args
+}
+
+function grt() {
+    $repo_root=(git rev-parse --show-toplevel > $null)
+    if ($?) {
+        Set-Location $repo_root
+    }
+}
+
+function gru() {
+    git reset -- $args
+}
+
+function grup() {
+    git remote update $args
+}
+
+function grv() {
+    git remote -v $args
+}
+
+
+function gsb() {
+    git status -sb $args
+}
+
+function gsd() {
+    git svn dcommit $args
+}
+
+function gsh() {
+    git show $args
+}
+
+function gsi() {
+    git submodule init $args
+}
+
+function gsps() {
+    git show --pretty=short --show-signature $args
+}
+
+function gsr() {
+    git svn rebase $args
+}
+
+function gss() {
+    git status -s $args
+}
 
 function gst() {
     git status $args
 }
 
-function gpf() {
-    git push --force-with-lease
+
+function gsta() {
+    # use the default stash push on git 2.13 and newer
+    git stash push $args
 }
 
-function grbi() {
-    git rebase -i --autosquash $args
+function gstaa() {
+    git stash apply $args
 }
 
-function glg() {
-    git log --stat $args
+function gstc() {
+    git stash clear $args
+}
+
+function gstd() {
+    git stash drop $args
+}
+
+function gstl() {
+    git stash list $args
+}
+
+function gstp() {
+    git stash pop $args
+}
+
+function gsts() {
+    git stash show --text $args
+}
+
+function gstu() {
+    gsta --include-untracked $args
+}
+
+function gstall() {
+    git stash --all $args
+}
+
+function gsu() {
+    git submodule update $args
+}
+
+function gsw() {
+    git 'switch' $args
+}
+
+function gswc() {
+    git 'switch' -c $args
+}
+
+function gswm() {
+    git 'switch' $(git_main_branch) $args
+}
+
+function gswd() {
+    git 'switch' $(git_develop_branch) $args
+}
+
+
+function gts() {
+    git tag -s $args
+}
+
+function gtv() {
+    git tag | Sort-Object
+}
+
+function gtl() {
+    $param1=$args[0]
+    git tag --sort=-v:refname -n -l "$param1*"
+}
+
+
+function gunignore() {
+    git update-index --no-assume-unchanged $args
+}
+
+function gunwip() {
+    git log -n 1 | findstr "\-\-wip\-\-"
+    git reset HEAD~1
+}
+
+function gup() {
+    git pull --rebase $args
+}
+
+function gupv() {
+    git pull --rebase -v $args
+}
+
+function gupa() {
+    git pull --rebase --autostash $args
+}
+
+function gupav() {
+    git pull --rebase --autostash -v $args
+}
+
+function glum() {
+    git pull upstream $(git_main_branch) $args
+}
+
+
+function gwch() {
+    git whatchanged -p --abbrev-commit --pretty=medium $args
+}
+
+function gwip() {
+    git add -A
+    git rm $(git ls-files --deleted) 2> $null
+    git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"
+}
+
+function gam() {
+    git am $args
+}
+
+function gamc() {
+    git am --continue $args
+}
+
+function gams() {
+    git am --skip $args
+}
+
+function gama() {
+    git am --abort $args
+}
+
+function gamscp() {
+    git am --show-current-patch $args
+}
+
+function grename() {
+    if ($null -eq $args[0] -or $null -eq $args[1]) {
+        Write-Output "Usage: $0 old_branch new_branch"
+        exit 1
+    }
+
+    # Rename branch locally
+    git branch -m "$args[0]" "$args[1]"
+    # Rename branch in origin remote
+    git push origin :"$args[0]"
+    if ($?) {
+        git push --set-upstream origin "$args[1]"
+    }
 }
